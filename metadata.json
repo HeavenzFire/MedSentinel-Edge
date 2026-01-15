@@ -1,0 +1,8 @@
+{
+  "name": "MedSentinel Edge",
+  "description": "An offline-first clinical intelligence assistant for rural and constrained environments, providing real-time note summarization, risk assessment, and workflow checklists using medical reasoning models.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
