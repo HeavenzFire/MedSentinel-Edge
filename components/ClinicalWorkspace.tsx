@@ -18,8 +18,8 @@ import {
   CheckCircle2,
   ChevronRight,
   Shield,
-  // Fix: Added missing Activity icon to the lucide-react import list
-  Activity
+  Activity,
+  Anchor
 } from 'lucide-react';
 import { analyzeClinicalNote, analyzeClinicalImage } from '../services/geminiService';
 import { saveEncounter } from '../services/storageService';
@@ -120,12 +120,11 @@ const ClinicalWorkspace: React.FC = () => {
                 <Shield size={20} />
               </div>
               <div>
-                <h2 className="text-sm font-black text-slate-900 uppercase tracking-tighter">Clinical Data Intake</h2>
+                <h2 className="text-sm font-black text-slate-950 uppercase tracking-tighter">Sovereign Data Intake</h2>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-slate-600 font-bold flex items-center gap-1">
-                    {/* Fix: Activity icon used here is now imported */}
+                  <span className="text-[10px] text-slate-600 font-bold flex items-center gap-1 uppercase tracking-widest">
                     <Activity size={10} className={isSyncing ? "animate-pulse text-blue-600" : ""} /> 
-                    {isSyncing ? "WRITING TO DISK..." : "CACHE INTEGRITY: VERIFIED"}
+                    {isSyncing ? "Syncing to Local Lattice..." : "NEA Integrity Verified"}
                   </span>
                 </div>
               </div>
@@ -160,7 +159,7 @@ const ClinicalWorkspace: React.FC = () => {
               </div>
             )}
             <textarea
-              className="w-full h-full p-10 text-slate-900 text-xl font-medium leading-relaxed focus:outline-none resize-none placeholder:text-slate-400 selection:bg-blue-100 transition-colors"
+              className="w-full h-full p-10 text-slate-900 text-xl font-medium leading-relaxed focus:outline-none resize-none placeholder:text-slate-400 selection:bg-slate-950 selection:text-white transition-colors"
               placeholder="Input patient history, exam findings, or scan data..."
               value={note}
               onChange={(e) => setNote(e.target.value)}
@@ -171,7 +170,7 @@ const ClinicalWorkspace: React.FC = () => {
 
           <div className="p-6 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
             <div className="text-[10px] text-slate-500 font-black uppercase tracking-widest flex items-center gap-2">
-              <Save size={14} /> Persistent Store Active
+              <Anchor size={14} className="text-blue-500" /> NEA Admission Gate: READY
             </div>
             <button
               onClick={handleAnalyze}
@@ -179,16 +178,15 @@ const ClinicalWorkspace: React.FC = () => {
               className={`flex items-center gap-3 px-10 py-4 rounded-2xl font-black text-base transition-all ${
                 isAnalyzing || !note.trim()
                   ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                  : 'bg-slate-950 text-white hover:bg-black border-b-4 border-slate-800 shadow-xl'
+                  : 'bg-slate-950 text-white hover:bg-black border-b-4 border-slate-800 shadow-xl active:scale-95'
               }`}
             >
               {isAnalyzing ? (
                 <Loader2 className="animate-spin" size={20} />
               ) : (
-                /* Fix: Activity icon used here is now imported */
-                <Activity size={20} className="text-blue-400" />
+                <Activity size={20} className="text-emerald-400" />
               )}
-              RUN LOCAL INFERENCE
+              COMMIT TO LATTICE
             </button>
           </div>
         </div>
@@ -201,9 +199,9 @@ const ClinicalWorkspace: React.FC = () => {
             <div className="w-16 h-16 bg-white border border-slate-200 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
               <History size={32} />
             </div>
-            <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-2">Awaiting Context</h3>
-            <p className="text-xs font-medium max-w-xs leading-relaxed">
-              System idling. Provide clinical input to generate local metrics and summaries.
+            <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-2">Awaiting Local Context</h3>
+            <p className="text-xs font-medium max-w-xs leading-relaxed uppercase tracking-tight">
+              Node idling. Input data to trigger 144-resonant inference summary.
             </p>
           </div>
         )}
@@ -211,20 +209,23 @@ const ClinicalWorkspace: React.FC = () => {
         {insights && (
           <div className="space-y-6 animate-in fade-in slide-in-from-right-8 duration-700 pb-8">
             {/* Clinical Summary */}
-            <div className="bg-slate-900 p-8 rounded-[32px] shadow-lg relative overflow-hidden">
-              <h3 className="text-[10px] font-black text-blue-300 mb-4 uppercase tracking-[0.2em]">Clinical Summary</h3>
-              <p className="text-slate-100 text-lg leading-relaxed font-semibold italic">
+            <div className="bg-slate-950 p-8 rounded-[32px] shadow-lg relative overflow-hidden border border-slate-800">
+              <h3 className="text-[10px] font-black text-emerald-400 mb-4 uppercase tracking-[0.2em]">Validated Clinical Summary</h3>
+              <p className="text-white text-lg leading-relaxed font-semibold italic opacity-90">
                 "{insights.summary}"
               </p>
+              <div className="absolute top-0 right-0 p-4">
+                 <Lock size={16} className="text-emerald-500/30" />
+              </div>
             </div>
 
             {/* Risk Flags */}
             <div className="bg-white p-8 rounded-[32px] border border-slate-300 shadow-sm">
-              <h3 className="text-[10px] font-black text-rose-700 mb-6 uppercase tracking-[0.2em]">Risk Flags (Local Inference)</h3>
+              <h3 className="text-[10px] font-black text-rose-700 mb-6 uppercase tracking-[0.2em]">Sovereign Risk Matrix</h3>
               <div className="space-y-4">
                 {insights.risks.map((risk, idx) => (
                   <div key={idx} className={`flex gap-4 p-5 rounded-2xl border ${risk.severity === 'high' ? 'bg-rose-50 border-rose-200' : 'bg-slate-50 border-slate-200'}`}>
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${risk.severity === 'high' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-white'}`}>
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${risk.severity === 'high' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-white shadow-md'}`}>
                       <AlertCircle size={20} />
                     </div>
                     <div className="flex-1">
@@ -238,25 +239,25 @@ const ClinicalWorkspace: React.FC = () => {
 
             {/* Findings */}
             <div className="bg-white p-6 rounded-[32px] border border-slate-300 shadow-sm">
-              <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Extracted Markers</h4>
+              <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">NEA Extracted Indicators</h4>
               <div className="flex flex-wrap gap-2">
                 {insights.structuredData.medications.map((m, i) => (
-                  <span key={i} className="px-3 py-2 bg-blue-100 text-blue-900 rounded-lg text-xs font-black border border-blue-200">{m}</span>
+                  <span key={i} className="px-3 py-2 bg-emerald-50 text-emerald-900 rounded-lg text-xs font-black border border-emerald-100 uppercase tracking-tighter">{m}</span>
                 ))}
                 {insights.structuredData.diagnoses.map((d, i) => (
-                  <span key={i} className="px-3 py-2 bg-slate-900 text-white rounded-lg text-xs font-bold">{d}</span>
+                  <span key={i} className="px-3 py-2 bg-slate-950 text-white rounded-lg text-xs font-bold shadow-sm uppercase tracking-tighter">{d}</span>
                 ))}
               </div>
             </div>
 
             {/* Workflow */}
-            <div className="bg-emerald-950 p-8 rounded-[32px] shadow-xl text-white border border-emerald-900">
-              <h3 className="text-[10px] font-black text-emerald-400 mb-6 uppercase tracking-[0.2em]">Workflow Checklists</h3>
+            <div className="bg-slate-900 p-8 rounded-[32px] shadow-xl text-white border border-slate-800">
+              <h3 className="text-[10px] font-black text-blue-400 mb-6 uppercase tracking-[0.2em]">Mandatory Workflow</h3>
               <div className="space-y-3">
                 {insights.checklist.map((item, idx) => (
-                  <label key={idx} className="flex items-start gap-4 p-2 hover:bg-emerald-900/40 rounded-xl transition-colors cursor-pointer group">
-                    <input type="checkbox" className="mt-1 w-5 h-5 rounded bg-emerald-900 border-emerald-800 text-emerald-500 focus:ring-emerald-500" />
-                    <span className="text-sm font-bold text-emerald-100/70 group-hover:text-white transition-colors leading-snug">{item}</span>
+                  <label key={idx} className="flex items-start gap-4 p-2 hover:bg-slate-800 rounded-xl transition-colors cursor-pointer group">
+                    <input type="checkbox" className="mt-1 w-5 h-5 rounded bg-slate-800 border-slate-700 text-blue-500 focus:ring-blue-500" />
+                    <span className="text-sm font-bold text-slate-400 group-hover:text-white transition-colors leading-snug uppercase tracking-tight">{item}</span>
                   </label>
                 ))}
               </div>

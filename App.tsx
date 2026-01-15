@@ -12,11 +12,13 @@ import {
   ChevronRight,
   Shield,
   Network,
-  Settings
+  Settings,
+  Scale
 } from 'lucide-react';
 import ClinicalWorkspace from './components/ClinicalWorkspace';
 import Dashboard from './components/Dashboard';
 import PatientList from './components/PatientList';
+import SovereignAudit from './components/SovereignAudit';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -26,6 +28,7 @@ const Sidebar = () => {
     { path: '/', icon: <ClipboardList size={22} />, label: 'Data Intake' },
     { path: '/patients', icon: <Users size={22} />, label: 'Patient Store' },
     { path: '/dashboard', icon: <Activity size={22} />, label: 'System Validation' },
+    { path: '/audit', icon: <Scale size={22} />, label: 'Sovereign Audit' },
   ];
 
   return (
@@ -64,11 +67,11 @@ const Sidebar = () => {
       <div className="p-6 hidden lg:block">
         <div className="bg-slate-900 rounded-2xl p-5 border border-slate-800">
           <div className="flex items-center gap-2 text-[9px] font-black text-slate-500 mb-2 uppercase tracking-widest">
-            <Lock size={12} className="text-emerald-500" /> Offline Verified
+            <Lock size={12} className="text-emerald-500" /> NEA Active
           </div>
           <p className="text-[10px] text-slate-500 font-bold leading-relaxed uppercase">
-            Data Persistence: <span className="text-white">Encrypted</span><br/>
-            Sync Status: <span className="text-emerald-400">Isolated</span>
+            Invariants: <span className="text-white">Locked</span><br/>
+            Sovereign Mode: <span className="text-emerald-400">Enabled</span>
           </p>
         </div>
         <button className="flex items-center gap-3 w-full px-4 py-4 mt-4 text-slate-500 hover:text-white transition-colors text-xs font-black uppercase tracking-widest">
@@ -83,22 +86,14 @@ const Header = () => {
   return (
     <header className="h-20 glass-effect fixed top-0 right-0 left-24 lg:left-64 z-40 flex items-center justify-between px-10 border-b border-slate-100">
       <div className="flex items-center gap-4 text-slate-400">
-        <span className="text-[10px] font-black uppercase tracking-widest">Node 01-HULSE</span>
+        <span className="text-[10px] font-black uppercase tracking-widest">Sovereign Node 01-TX</span>
         <ChevronRight size={14} className="text-slate-200" />
-        <span className="text-sm font-bold text-slate-900">Zachary Hulse, Clinical Lead</span>
+        <span className="text-sm font-bold text-slate-900 uppercase">Operational Protocol Active</span>
       </div>
       <div className="flex items-center gap-6">
-        <div className="relative group hidden md:block">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-          <input 
-            type="text" 
-            placeholder="Search local records..." 
-            className="pl-12 pr-6 py-2.5 bg-slate-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-slate-900 transition-all w-80 font-medium"
-          />
-        </div>
         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-950 text-white text-[9px] font-black uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-emerald-500" />
-          Stability: Stable
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          Resonance: 144Hz
         </div>
       </div>
     </header>
@@ -117,6 +112,7 @@ const App: React.FC = () => {
               <Route path="/" element={<ClinicalWorkspace />} />
               <Route path="/patients" element={<PatientList />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/audit" element={<SovereignAudit />} />
             </Routes>
           </main>
         </div>
